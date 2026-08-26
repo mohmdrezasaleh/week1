@@ -1,6 +1,7 @@
 # Temporary files
 *.tmp
 *.temp
+*.swp
 *~
 
 # Log files
@@ -11,6 +12,9 @@ logs/
 *.tar.gz
 backups/
 
+# Data folder
+data/
+*.json
 
 # Python cache
 __pycache__/
