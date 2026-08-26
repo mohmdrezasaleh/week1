@@ -1,0 +1,29 @@
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Log files
+*.log
+logs/
+
+# Backup archives
+*.tar.gz
+backups/
+
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment files
+.env
+
+# Generated reports
+report.md
+report.html
+
+# OS files
+.DS_Store
+Thumbs.db
