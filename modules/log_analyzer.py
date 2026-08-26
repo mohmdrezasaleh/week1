@@ -2,6 +2,11 @@ import os
 import json
 from collections import Counter
 
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+RESET = "\033[0m"
+
 LOG_FILE = "/var/log/nginx/access.log"
 OUTPUT_FILE = "data/log_analysis.json"
 
@@ -106,12 +111,12 @@ def detect_status(analysis):
 
     if count_401 > SECURITY_THRESHOLD:
         alerts.append(
-            f"High number of 401 Unauthorized responses detected: {count_401}"
+            f"{YELLOW}High number of 401 Unauthorized responses detected:{RESET} {count_401}"
         )
 
     if count_403 > SECURITY_THRESHOLD:
         alerts.append(
-            f"High number of 403 Forbidden responses detected: {count_403}"
+            f"{YELLOW}High number of 403 Forbidden responses detected:{RESET} {count_403}"
         )
 
     return alerts
@@ -132,7 +137,7 @@ def main():
         with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
             json.dump(analysis, file, indent=4)
 
-        print("Nginx log analysis completed.")
+        print(f"{GREEN}Nginx log analysis completed.{RESET}")
         print(f"Total requests: {analysis['total_requests']}")
         print(f"Invalid lines: {analysis['invalid_lines']}")
 
@@ -149,16 +154,16 @@ def main():
             for alert in alerts:
                 print(f"  [WARNING] {alert}")
         else:
-            print("  [OK] No security threats detected.")
+            print("  {GREEN}[OK] No security threats detected.{RESET}")
 
         print(f"\nOutput saved to: {OUTPUT_FILE}")
 
     except FileNotFoundError as error:
-        print(f"[ERROR] {error}")
+        print(f"[ERROR] {RED}{error}{RESET}")
         raise SystemExit(1)
 
     except PermissionError:
-        print(f"[ERROR] Permission denied: {LOG_FILE}")
+        print(f"[ERROR] {RED}Permission denied:{RESET} {LOG_FILE}")
         print("Try running the script with sudo.")
         raise SystemExit(1)            
 
