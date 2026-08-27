@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from collections import Counter
 
 GREEN = "\033[92m"
@@ -22,17 +23,16 @@ def read_log():
 
 def parse_line(line):
     """"Extracting clinet IPs and HTTP status code from one log line"""
-    parts = line.split()
+    pattern = r'^(\S+) \S+ \S+ \[[^\]]+\] ".*?" (\d{3}) \d+'
 
-    if len(parts) < 9 :
+    match = re.search(pattern, line)
+
+    if not match:
         return None
 
-    ip = parts[0]
-    status = int(parts[8])
-
     return {
-        "ip": ip,
-        "status": status
+        "ip": match.group(1),
+        "status": int(match.group(2))
     }
 
 def analyze_logs(lines):
